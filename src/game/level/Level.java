@@ -49,7 +49,7 @@ public class Level {
 		}
 	}
 	
-public void render(int xScroll, Screen screen) {
+	public void render(int xScroll, Screen screen) {
 		
 		screen.setOfsset(xScroll);
 		int x0 = (xScroll) / Tile.SIZE - 6 ;
@@ -60,21 +60,6 @@ public void render(int xScroll, Screen screen) {
 		for (int y = y0; y < y1; y++) {
 			for (int x = x0; x < x1; x++) {
 				renderTile(x, y, whichLevel, screen);
-			}
-		}
-	}
-
-	public void render(int xScroll, Screen screen, boolean level) {
-		
-		screen.setOfsset(xScroll);
-		int x0 = (xScroll) / Tile.SIZE - 6 ;
-		int x1 = (xScroll + screen.width + Tile.SIZE) / Tile.SIZE - 6;
-		int y0 = 0;
-		int y1 = screen.height / Tile.SIZE;
-		
-		for (int y = y0; y < y1; y++) {
-			for (int x = x0; x < x1; x++) {
-				renderTile(x, y, level, screen);
 			}
 		}
 	}
@@ -154,6 +139,7 @@ public void render(int xScroll, Screen screen) {
 	
 	
 	public void loadLevel(String path1, String path2) {
+		Game.basicEnemies = new BasicEnemy[100];
 		endX = 1000 * 16;
 		try {
 			BufferedImage image1 = ImageIO.read(Level.class.getResource(path1));

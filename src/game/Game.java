@@ -123,24 +123,13 @@ public class Game extends Canvas implements Runnable {
 		
 		screen.clear();	
 		
-		if (Level.whichLevel) {
-			level.render(player.x, screen, true);
-			for (int i = 0; i < basicEnemies.length; i++) {
-				if (basicEnemies[i] != null) {
-					basicEnemies[i].render(screen);
-				}
+		level.render(player.x, screen);
+		for (int i = 0; i < basicEnemies.length; i++) {
+			if (basicEnemies[i] != null) {
+				basicEnemies[i].render(screen);
 			}
-			level.render(player.x, screen, false);
 		}
-		else {
-			level.render(player.x, screen, false);
-			for (int i = 0; i < basicEnemies.length; i++) {
-				if (basicEnemies[i] != null) {
-					basicEnemies[i].render(screen);
-				}
-			}
-			level.render(player.x, screen, true);
-		}
+		
 		player.render(screen);
 		
 		for (int i = 0; i < pixels.length; i++) {

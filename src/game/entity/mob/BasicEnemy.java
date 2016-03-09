@@ -42,8 +42,8 @@ public class BasicEnemy extends Mob {
 		
 		
 		switch (state) {
-		case 2: motionX -= 0.5;break;
-		case 3: motionX += 0.5;break;
+		case 2: motionX -= 0.4;break;
+		case 3: motionX += 0.4;break;
 		}
 		
 		
@@ -64,7 +64,7 @@ public class BasicEnemy extends Mob {
 			}
 		}
 		
-		if (motionX < 0.5 && motionX > -0.5) motionX = 0;
+		if (motionX < 0.2 && motionX > -0.2) motionX = 0;
 		else motionX = (collisionGravity(1) || partialTileCollision(0, 1, false)) ? motionX * 0.8 : motionX * 0.95;
 		
 		
@@ -126,7 +126,7 @@ public class BasicEnemy extends Mob {
 	}
 	
 	public void render(Screen screen) {
-		if (whichLevel == Level.whichLevel) screen.renderEntity(x, y, Sprite.basicEnemy);
-		else screen.renderEntity(x, y, Sprite.basicEnemy.faded);
+		if (whichLevel == Level.whichLevel) screen.renderEntityBehindWall(x, y, Sprite.basicEnemy, whichLevel);
+		else screen.renderEntityBehindWall(x, y, Sprite.basicEnemy.faded, !whichLevel);
 	}
 }

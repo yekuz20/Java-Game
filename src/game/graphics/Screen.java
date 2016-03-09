@@ -2,7 +2,9 @@ package game.graphics;
 
 import java.util.Random;
 
+import game.Game;
 import game.entity.mob.Player;
+import game.level.Level;
 import game.level.tile.PartialTile;
 import game.level.tile.Tile;
 
@@ -75,6 +77,29 @@ public class Screen {
 				xChange = (xChange < 0) ? 0 : xChange;
 				if (sprite.pixels[x+y*sprite.SIZE] != 0xFFFF00FF) {
 					pixels[xChange+yChange*width] = sprite.pixels[x+y*Player.SIZE];
+				}
+			}
+		}
+	}
+	
+	public void renderEntityBehindWall(int xPos, int yPos, Sprite sprite, boolean level) {
+		xPos -= xOffset;
+		for (int y = 0; y < sprite.SIZE; y++) {
+			int yChange = yPos + y;
+			for (int x = 0; x < sprite.SIZE; x++) {
+				int xChange = xPos + x;
+				if (xChange < -sprite.SIZE || xChange >= width || yChange < 0 || yChange >= height) { break; }
+				xChange = (xChange < 0) ? 0 : xChange;
+				if (sprite.pixels[x+y*sprite.SIZE] != 0xFFFF00FF) {
+					PartialTile tile = Game.level.getPartialTile((x+xPos+xOffset)/Tile.SIZE, (y+yPos)/Tile.SIZE, level);
+					if (!(tile.solid() &&
+							(x+xPos+xOffset)%Tile.SIZE >= tile.x0 && 
+							(x+xPos+xOffset)%Tile.SIZE <= tile.x1 &&
+							(y+yPos)%Tile.SIZE >= tile.y0 &&
+							(y+yPos)%Tile.SIZE <= tile.y1)) {
+						if (!Game.level.getTile((x+xPos+xOffset)/Tile.SIZE, (y+yPos)/Tile.SIZE, level).solid())
+						pixels[xChange+yChange*width] = sprite.pixels[x+y*Player.SIZE];
+					}
 				}
 			}
 		}
