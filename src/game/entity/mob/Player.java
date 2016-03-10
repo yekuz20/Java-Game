@@ -1,5 +1,6 @@
 package game.entity.mob;
 
+import game.Game;
 import game.graphics.Screen;
 import game.graphics.Sprite;
 import game.input.Keyboard;
@@ -33,6 +34,12 @@ public class Player extends Mob {
 	}
 	
 	public void update() {
+		
+		if (x > Level.endX1 && x < Level.endX2 && y > Level.endY1 && y < Level.endY2) {
+			Level.currentLevel = 1;
+			Game.level.loadLevel(Level.levels[Game.level.currentLevel*2], Level.levels[Game.level.currentLevel*2+1]);
+			setPlayerPos(Level.playerX, Level.playerY);
+		}
 		
 		if (!input.wasSpacePressed && input.space && !collision(!Level.whichLevel) && !partialTileCollision(!Level.whichLevel)) {
 			Level.whichLevel = (Level.whichLevel) ? false : true;input.wasSpacePressed = true;

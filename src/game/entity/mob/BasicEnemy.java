@@ -11,7 +11,7 @@ public class BasicEnemy extends Mob {
 	double motionY = 0;
 	double gravityStartValue = 0.2;
 	double gravity;
-	public static double motionX = 0;
+	private double motionX = 0;
 	public final static int SIZE = 16;
 	private int state;
 	private int tempState;
@@ -35,10 +35,12 @@ public class BasicEnemy extends Mob {
 	public void update() {
 		
 		if ((!Game.level.getTile((int)(x+motionX+SIZE)/Tile.SIZE, (y+SIZE)/Tile.SIZE, whichLevel).solid() ||
-				Game.level.getTile((int)(x+motionX+SIZE)/Tile.SIZE, (y+SIZE/2)/Tile.SIZE, whichLevel).solid()) && state == 3) { state = 2; }
+				Game.level.getTile((int)(x+motionX+SIZE)/Tile.SIZE, (y+SIZE/2)/Tile.SIZE, whichLevel).solid() || 
+				partialTileCollision((int)motionX+1, (int)motionY, true)) && state == 3) { state = 2; }
 		
 		if ((!Game.level.getTile((int)(x+motionX)/Tile.SIZE, (y+SIZE)/Tile.SIZE, whichLevel).solid() ||
-				Game.level.getTile((int)(x+motionX-1)/Tile.SIZE, (y+SIZE/2)/Tile.SIZE, whichLevel).solid()) && state == 2) { state = 3; }
+				Game.level.getTile((int)(x+motionX-1)/Tile.SIZE, (y+SIZE/2)/Tile.SIZE, whichLevel).solid() || 
+				partialTileCollision((int)motionX-1, (int)motionY, true)) && state == 2) { state = 3; }
 		
 		
 		switch (state) {
@@ -64,7 +66,7 @@ public class BasicEnemy extends Mob {
 			}
 		}
 		
-		if (motionX < 0.2 && motionX > -0.2) motionX = 0;
+		if (motionX < 0.4 && motionX > -0.4) motionX = 0;
 		else motionX = (collisionGravity(1) || partialTileCollision(0, 1, false)) ? motionX * 0.8 : motionX * 0.95;
 		
 		

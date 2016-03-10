@@ -14,7 +14,9 @@ import game.level.tile.Tile;
 
 public class Level {
 	
+	public static String[] levels = new String[100];
 	
+	public static int currentLevel = 0;
 	protected int width, height;
 	public static int levelWidth;
 	public static int levelHeight;
@@ -26,9 +28,19 @@ public class Level {
 	public static int[] greenMapDetails;
 	public static int playerX = 8 * 16;
 	public static int playerY = 8 * 16;
-	public static int endX = 1000 * 16;
+	public static int endX1 = 1000 * 16;
+	public static int endX2 = 2000 * 16;
+	public static int endY1 = 0 * 16;
+	public static int endY2 = 1000 * 16;
 	
 	public static boolean whichLevel = true; // true = blue, false = red;
+	
+	public static void populateLevels() {
+		levels[0] = "/startLevelBlue.png";
+		levels[1] = "/startLevelRed.png";
+		levels[2] = "/aLevelBlue.png";
+		levels[3] = "/aLevelRed.png";
+	}
 	
 	public Level(String path1, String path2) {
 		loadLevel(path1, path2);
@@ -40,14 +52,6 @@ public class Level {
 		
 	}
 	
-	
-	public void update(Player player) {
-		if (player.x >= endX) {
-			loadLevel("/aLevelBlue.png", "/aLevelRed.png");
-			player.x = playerX;
-			player.y = playerY;
-		}
-	}
 	
 	public void render(int xScroll, Screen screen) {
 		
@@ -139,8 +143,12 @@ public class Level {
 	
 	
 	public void loadLevel(String path1, String path2) {
+		endX1 = 1000 * 16;
+		endX2 = 2000 * 16;
+		endY1 = 0 * 16;
+		endY2 = 1000 * 16;
+		boolean hasFoundEnd = false;
 		Game.basicEnemies = new BasicEnemy[100];
-		endX = 1000 * 16;
 		try {
 			BufferedImage image1 = ImageIO.read(Level.class.getResource(path1));
 			BufferedImage image2 = ImageIO.read(Level.class.getResource(path2));
@@ -161,7 +169,22 @@ public class Level {
 					playerY = i / width * Tile.SIZE;
 				}
 				if (tiles[i] == 0xffbbbbbb) {
-					endX = (i % width) * Tile.SIZE;
+					if (!hasFoundEnd) {
+						endX1 = (i % width) * Tile.SIZE;
+						endY1 = i / width * Tile.SIZE;
+						hasFoundEnd = true;
+					} else {
+						endX2 = (i % width + 1) * Tile.SIZE;
+						if (endX1 > endX2) {
+							endX2 = endX1 + Tile.SIZE;
+							endX1 = (i % width) * Tile.SIZE;
+						}
+						endY2 = (i / width + 1) * Tile.SIZE;
+						if (endY1 > endY2) {
+							endY2 = endY1 + Tile.SIZE;
+							endY1 = i / width * Tile.SIZE;
+						}
+					}
 				}
 				if (tiles[i] == 0xffcccc01) {
 					Game.createBasicEnemy((i % width) * Tile.SIZE, i / width * Tile.SIZE, 3, true);
@@ -170,6 +193,9 @@ public class Level {
 			}
 			image2.getRGB(0, 0, w, h, tiles, 0, w);
 			for (int i = 0; i < tiles.length; i++) {
+				if (tiles[i] == 0xffcccc01) {
+					Game.createBasicEnemy((i % width) * Tile.SIZE, i / width * Tile.SIZE, 3, false);
+				}
 				greenTiles[i] = tiles[i];
 			}
 		} catch (IOException e) {

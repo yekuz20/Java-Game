@@ -48,6 +48,7 @@ public class Game extends Canvas implements Runnable {
 		key = new Keyboard();
 		
 		level = new Level("/startLevelBlue.png", "/startLevelRed.png");
+		Level.populateLevels();
 		int x = Level.playerX;
 		int y = Level.playerY;
 		player = new Player(x, y, key);
@@ -106,10 +107,12 @@ public class Game extends Canvas implements Runnable {
 	public void update() {
 		key.update();
 		player.update();
-		level.update(player);
 		for (int i = 0; i < basicEnemies.length; i++) {
 			if (basicEnemies[i] != null) {
 				basicEnemies[i].update();
+			}
+			else {
+				break;
 			}
 		}
 	}
