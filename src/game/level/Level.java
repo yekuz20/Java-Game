@@ -32,6 +32,10 @@ public class Level {
 	public static int endX2 = 2000 * 16;
 	public static int endY1 = 0 * 16;
 	public static int endY2 = 1000 * 16;
+	public static int backX1 = 1000 * 16;
+	public static int backX2 = 2000 * 16;
+	public static int backY1 = 0 * 16;
+	public static int backY2 = 1000 * 16;
 	
 	public static boolean whichLevel = true; // true = blue, false = red;
 	
@@ -147,6 +151,10 @@ public class Level {
 		endX2 = 2000 * 16;
 		endY1 = 0 * 16;
 		endY2 = 1000 * 16;
+		backX1 = 1000 * 16;
+		backX2 = 2000 * 16;
+		backY1 = 0 * 16;
+		backY2 = 1000 * 16;
 		boolean hasFoundEnd = false;
 		Game.basicEnemies = new BasicEnemy[100];
 		try {
@@ -183,6 +191,24 @@ public class Level {
 						if (endY1 > endY2) {
 							endY2 = endY1 + Tile.SIZE;
 							endY1 = i / width * Tile.SIZE;
+						}
+					}
+				}
+				if (tiles[i] == 0xffbbbbbc) {
+					if (!hasFoundEnd) {
+						backX1 = (i % width) * Tile.SIZE;
+						backY1 = i / width * Tile.SIZE;
+						hasFoundEnd = true;
+					} else {
+						backX2 = (i % width + 1) * Tile.SIZE;
+						if (backX1 > backX2) {
+							backX2 = backX1 + Tile.SIZE;
+							backX1 = (i % width) * Tile.SIZE;
+						}
+						backY2 = (i / width + 1) * Tile.SIZE;
+						if (backY1 > backY2) {
+							backY2 = backY1 + Tile.SIZE;
+							backY1 = i / width * Tile.SIZE;
 						}
 					}
 				}
