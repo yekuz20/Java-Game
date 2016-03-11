@@ -22,7 +22,7 @@ public class Game extends Canvas implements Runnable {
 	
 	public static int width = 512;
 	public static int height = width / 16 * 9;
-	public static int scale = 3;
+	public static double scale = 2.75;
 	
 	private Thread thread;
 	private JFrame frame;
@@ -40,7 +40,7 @@ public class Game extends Canvas implements Runnable {
 	private int[] pixels = ((DataBufferInt)image.getRaster().getDataBuffer()).getData();
 	
 	public Game() {
-		Dimension size = new Dimension(width * scale, height * scale);
+		Dimension size = new Dimension((int)(width * scale), (int)(height * scale));
 		setPreferredSize(size); 
 		
 		frame = new JFrame();
