@@ -34,26 +34,15 @@ public class Player extends Mob {
 	}
 	
 	public void update() {
-		
-		if (x > Level.endX1 && x < Level.endX2 && y > Level.endY1 && y < Level.endY2) {
-			if (Level.levels[Level.currentLevel*2+2] != null) 
-			Level.currentLevel++;
-			Game.level.loadLevel(Level.levels[Level.currentLevel*2], Level.levels[Level.currentLevel*2+1]);
-			setPlayerPos(Level.playerX, y);
-		}
-		
-		if (x > Level.backX1 && x < Level.backX2 && y > Level.backY1 && y < Level.backY2) {
-			if (Level.currentLevel > 0) {
-				if (Level.levels[Level.currentLevel*2-2] != null) 
-				Level.currentLevel--;
+		for (int i = 0; i < Level.exits.length; i++) {
+			if (x >= Level.exits[i].x1 && x <= Level.exits[i].x2 && y >= Level.exits[i].y1 && y <= Level.exits[i].y2) {
+				int newX = (Level.exits[i].x > 0) ? Level.exits[i].x : x ;
+				int newY = (Level.exits[i].y > 0) ? Level.exits[i].y : y ;
+				Game.level.loadLevel(Level.exits[i].id);
+				setPlayerPos(newX, newY);
 			}
-			Game.level.loadLevel(Level.levels[Level.currentLevel*2], Level.levels[Level.currentLevel*2+1]);
-			setPlayerPos(Level.endX1, y);
 		}
 		
-		if (y > 1000) {
-//			setPlayerPos(Level.playerX, Level.playerY);
-		}
 		
 		if (!input.wasSpacePressed && input.space && !collision(!Level.whichLevel) && !partialTileCollision(!Level.whichLevel)) {
 			Level.whichLevel = (Level.whichLevel) ? false : true;input.wasSpacePressed = true;

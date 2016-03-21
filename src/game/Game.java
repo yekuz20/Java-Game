@@ -31,7 +31,7 @@ public class Game extends Canvas implements Runnable {
 	private Player player;
 	private boolean running = false;
 	
-	public static BasicEnemy[] basicEnemies = new BasicEnemy[100];
+	public static BasicEnemy[] basicEnemies;
 	
 	
 	private Screen screen;
@@ -48,7 +48,6 @@ public class Game extends Canvas implements Runnable {
 		key = new Keyboard();
 		
 		level = new Level("/startLevelBlue.png", "/startLevelRed.png");
-		Level.populateLevels();
 		int x = Level.playerX;
 		int y = Level.playerY;
 		player = new Player(x, y, key);
